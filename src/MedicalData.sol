@@ -7,8 +7,8 @@ contract MedicalData {
     struct PatientRecord {
         ebytes256 encryptedFullName;
         euint64 encryptedBirthYear;
-        ebytes256[] encryptedComplaintsHistory;
-        ebytes256[] encryptedExaminationDataHistory;
+        ebytes256 encryptedComplaints;
+        ebytes256 encryptedExaminationData;
         address owner;
         mapping(address => bool) accessList;
         mapping(address => bool) accessRequests;
@@ -46,8 +46,8 @@ contract MedicalData {
         PatientRecord storage record = records[msg.sender];
         record.encryptedFullName = _encryptedFullName;
         record.encryptedBirthYear = _encryptedBirthYear;
-        record.encryptedComplaintsHistory.push(_encryptedComplaints);
-        record.encryptedExaminationDataHistory.push(_encryptedExaminationData);
+        record.encryptedComplaints = _encryptedComplaints;
+        record.encryptedExaminationData = _encryptedExaminationData;
         record.owner = msg.sender;
         emit RecordAdded(msg.sender);
     }
@@ -57,8 +57,8 @@ contract MedicalData {
         onlyAuthorized(_patient)
     {
         PatientRecord storage record = records[_patient];
-        record.encryptedComplaintsHistory.push(_newComplaints);
-        record.encryptedExaminationDataHistory.push(_newExaminationData);
+        record.encryptedComplaints = _newComplaints;
+        record.encryptedExaminationData = _newExaminationData;
         emit NewDataAdded(_patient, msg.sender);
     }
 
@@ -73,14 +73,14 @@ contract MedicalData {
         public
         view
         onlyAuthorized(_patient)
-        returns (ebytes256 , euint64, ebytes256[] memory, ebytes256[] memory)
+        returns (ebytes256 , euint64, ebytes256, ebytes256)
     {
         PatientRecord storage record = records[_patient];
         return (
             record.encryptedFullName,
             record.encryptedBirthYear,
-            record.encryptedComplaintsHistory,
-            record.encryptedExaminationDataHistory
+            record.encryptedComplaints,
+            record.encryptedExaminationData
         );
     }
 
@@ -103,8 +103,8 @@ contract MedicalData {
         record.accessList[_requester] = true;
         TFHE.allow(record.encryptedFullName, _requester);
         TFHE.allow(record.encryptedBirthYear, _requester);
-        // TFHE.allow(record.encryptedComplaintsHistory, _requester);
-        // TFHE.allow(record.encryptedExaminationDataHistory, _requester);
+        TFHE.allow(record.encryptedComplaints, _requester);
+        TFHE.allow(record.encryptedExaminationData, _requester);
         emit AccessGranted(msg.sender, _requester);
     }
 
