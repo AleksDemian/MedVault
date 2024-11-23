@@ -1,66 +1,35 @@
-## Foundry
+# MedVault
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+MedVault is a secure, blockchain-based platform for encrypted storage, management, and sharing of sensitive medical data. This project empowers patients to control access to their medical records while ensuring data privacy, integrity, and availability.
 
-Foundry consists of:
+## Problem Statement
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+In today's healthcare systems, patients face significant challenges in managing their medical records securely and conveniently. Medical data is often fragmented across various institutions, and privacy concerns arise due to unauthorized access and data breaches. MedVault aims to solve these issues by offering a decentralized solution for secure medical data management.
 
-## Documentation
+## Features
 
-https://book.getfoundry.sh/
+- Patient-Controlled Access: Patients have full control over who can access their medical records, allowing them to grant or revoke permissions.
+
+- Homomorphic Encryption: Sensitive data is encrypted using homomorphic encryption to ensure privacy even when shared for processing.
+
+- Decentralized Storage: Medical records are stored on a blockchain, ensuring data integrity and resistance to tampering.
+
+- Secure Sharing: Data can be securely shared with healthcare professionals, maintaining confidentiality.
+
+## Smart Contracts
+
+The main contract, MedicalData, manages patient records by:
+
+- Storing encrypted patient data (full name, birth year, medical history).
+
+- Allowing authorized users to access medical records.
+
+- Providing the functionality for patients to grant or revoke access permissions.
 
 ## Usage
 
-### Build
+Add Patient Record: Patients can add their encrypted medical information to the blockchain by interacting with the addRecord() function.
 
-```shell
-$ forge build
-```
+Request Access: Healthcare professionals can request access to patient records, and patients can choose to grant or deny access.
 
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+Grant/Revoke Access: The owner of the record can update permissions at any time to control who has access to their data.
